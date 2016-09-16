@@ -651,6 +651,14 @@ class Repository(github.GithubObject.CompletableGithubObject):
         self._completeIfNotSet(self._watchers_count)
         return self._watchers_count.value
 
+    @property
+    def license(self):
+        """
+        :type: dict
+        """
+        self._completeIfNotSet(self._license)
+        return self._license.value
+
     def add_to_collaborators(self, collaborator):
         """
         :calls: `PUT /repos/:owner/:repo/collaborators/:user <http://developer.github.com/v3/repos/collaborators>`_
@@ -2346,6 +2354,7 @@ class Repository(github.GithubObject.CompletableGithubObject):
         self._url = github.GithubObject.NotSet
         self._watchers = github.GithubObject.NotSet
         self._watchers_count = github.GithubObject.NotSet
+        self._license = github.GithubObject.NotSet
 
     def _useAttributes(self, attributes):
         if "archive_url" in attributes:  # pragma no branch
@@ -2490,3 +2499,5 @@ class Repository(github.GithubObject.CompletableGithubObject):
             self._watchers = self._makeIntAttribute(attributes["watchers"])
         if "watchers_count" in attributes:  # pragma no branch
             self._watchers_count = self._makeIntAttribute(attributes["watchers_count"])
+        if "license" in attributes:  # pragma no branch
+            self._license = self._makeDictAttribute(attributes.get("license"))

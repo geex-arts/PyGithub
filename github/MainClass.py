@@ -190,7 +190,7 @@ class Github(object):
         )
         return github.Organization.Organization(self.__requester, headers, data, completed=True)
 
-    def get_repo(self, full_name_or_id, lazy=True):
+    def get_repo(self, full_name_or_id, lazy=True, preview=True):
         """
         :calls: `GET /repos/:owner/:repo <http://developer.github.com/v3/repos>`_ or `GET /repositories/:id <http://developer.github.com/v3/repos>`_
         :rtype: :class:`github.Repository.Repository`
@@ -202,7 +202,10 @@ class Github(object):
             return Repository.Repository(self.__requester, {}, {"url": url}, completed=False)
         headers, data = self.__requester.requestJsonAndCheck(
             "GET",
-            "%s%s" % (url_base, full_name_or_id)
+            "%s%s" % (url_base, full_name_or_id),
+            headers={
+                "Accept": "application/vnd.github.drax-preview+json",
+            } if preview else None
         )
         return Repository.Repository(self.__requester, headers, data, completed=True)
 
